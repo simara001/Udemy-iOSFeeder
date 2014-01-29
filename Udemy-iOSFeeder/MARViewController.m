@@ -52,6 +52,10 @@
     [alert show];
 }
 
+- (NSString *)tableView:(UITableView *)tableView titleForHeaderInSection:(NSInteger)section {
+    return section == 0 ? @"Basketball" : nil;
+}
+
 #pragma mark - NSURLConnection Methods
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection {
