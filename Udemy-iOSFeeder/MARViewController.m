@@ -20,7 +20,8 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-    self.mainArray = [@[@"Noticia #1", @"Noticia #2", @"Noticia #3"]mutableCopy];
+//    self.mainArray = [@[@"Noticia #1", @"Noticia #2", @"Noticia #3"]mutableCopy];
+    self.mainArray = [NSMutableArray new];
     responseData = [NSMutableData data];
     NSString *urlString = @"http://api.espn.com/v1/sports/basketball/nba/news/headlines/top/?apikey=kdep287cnj4xg5rsn2sm74y6";
     NSURL *url = [[NSURL alloc] initWithString:urlString];
@@ -37,7 +38,7 @@
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text = self.mainArray[indexPath.row];
+    cell.textLabel.text = self.mainArray[indexPath.row][@"headline"];
     
     return cell;
 }
@@ -45,14 +46,14 @@
 #pragma mark - NSURLConnection Methods
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection {
-    NSLog(@"La conexión fue un éxito. Se obtuvieron %d kb de datos.", responseData.length);
     NSError *error = nil;
     NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
-    NSLog(@"La respuesta de ESPN fue la siguiente: %@", json);
+    self.mainArray = json[@"headlines"];
+    [self.mainFeeder reloadData];
 }
 
 -(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
-    NSLog(@"Hubo un error con la conexión a la API de ESPN");
+    NSLog(@"Hubo un error con la conexión a ESPN");
 }
 
 -(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
