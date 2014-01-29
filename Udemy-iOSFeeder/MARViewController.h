@@ -8,7 +8,7 @@
 
 #import <UIKit/UIKit.h>
 
-@interface MARViewController : UIViewController
+@interface MARViewController : UIViewController <UITableViewDataSource, UITableViewDelegate, NSURLConnectionDataDelegate, NSURLConnectionDelegate>
 
 @property (weak, nonatomic) IBOutlet UITableView *mainFeeder;
 @property (strong, nonatomic) NSMutableArray *mainArray;

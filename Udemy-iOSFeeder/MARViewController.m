@@ -8,7 +8,10 @@
 
 #import "MARViewController.h"
 
-@interface MARViewController ()
+@interface MARViewController () {
+    __strong NSMutableData *responseData;
+    __strong NSURLConnection *connection;
+}
 
 @end
 
@@ -17,11 +20,15 @@
 - (void)viewDidLoad
 {
     [super viewDidLoad];
-	// Do any additional setup after loading the view, typically from a nib.
     self.mainArray = [@[@"Noticia #1", @"Noticia #2", @"Noticia #3"]mutableCopy];
+    responseData = [NSMutableData data];
+    NSString *urlString = @"http://api.espn.com/v1/sports/basketball/nba/news/headlines/top/?apikey=kdep287cnj4xg5rsn2sm74y6";
+    NSURL *url = [[NSURL alloc] initWithString:urlString];
+    NSURLRequest *request = [NSURLRequest requestWithURL:url];
+    connection = [[NSURLConnection alloc] initWithRequest:request delegate:self];
 }
 
-#pragma mark UITableView - Required Methods
+#pragma mark - UITableView - Required Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
     return [self.mainArray count];
@@ -33,6 +40,28 @@
     cell.textLabel.text = self.mainArray[indexPath.row];
     
     return cell;
+}
+
+#pragma mark - NSURLConnection Methods
+
+-(void)connectionDidFinishLoading:(NSURLConnection *)connection {
+    NSLog(@"La conexión fue un éxito. Se obtuvieron %d kb de datos.", responseData.length);
+    NSError *error = nil;
+    NSDictionary *json = [NSJSONSerialization JSONObjectWithData:responseData options:kNilOptions error:&error];
+    NSLog(@"La respuesta de ESPN fue la siguiente: %@", json);
+}
+
+-(void)connection:(NSURLConnection *)connection didFailWithError:(NSError *)error {
+    NSLog(@"Hubo un error con la conexión a la API de ESPN");
+}
+
+-(void)connection:(NSURLConnection *)connection didReceiveData:(NSData *)data {
+    [responseData appendData:data];
+}
+
+-(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
+    [responseData setLength:0];
+    
 }
 
 @end
