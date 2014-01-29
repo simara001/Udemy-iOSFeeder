@@ -43,6 +43,15 @@
     return cell;
 }
 
+-(void)tableView:(UITableView *)tableView didSelectRowAtIndexPath:(NSIndexPath *)indexPath {
+    UIAlertView *alert = [[UIAlertView alloc] initWithTitle:self.mainArray[indexPath.row][@"headline"]
+                                                    message:self.mainArray[indexPath.row][@"description"]
+                                                   delegate:self
+                                          cancelButtonTitle:@"Ok"
+                                          otherButtonTitles:nil, nil];
+    [alert show];
+}
+
 #pragma mark - NSURLConnection Methods
 
 -(void)connectionDidFinishLoading:(NSURLConnection *)connection {
@@ -62,7 +71,6 @@
 
 -(void)connection:(NSURLConnection *)connection didReceiveResponse:(NSURLResponse *)response {
     [responseData setLength:0];
-    
 }
 
 @end
