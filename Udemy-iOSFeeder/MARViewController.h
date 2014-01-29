@@ -10,4 +10,6 @@
 
 @interface MARViewController : UIViewController
 
+@property (weak, nonatomic) IBOutlet UITableView *mainFeeder;
+
 @end
