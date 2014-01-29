@@ -18,18 +18,19 @@
 {
     [super viewDidLoad];
 	// Do any additional setup after loading the view, typically from a nib.
+    self.mainArray = [@[@"Noticia #1", @"Noticia #2", @"Noticia #3"]mutableCopy];
 }
 
 #pragma mark UITableView - Required Methods
 
 - (NSInteger)tableView:(UITableView *)tableView numberOfRowsInSection:(NSInteger)section {
-    return 5;
+    return [self.mainArray count];
 }
 
 - (UITableViewCell *)tableView:(UITableView *)tableView cellForRowAtIndexPath:(NSIndexPath *)indexPath {
     static NSString *CellIdentifier = @"Cell";
     UITableViewCell *cell = [tableView dequeueReusableCellWithIdentifier:CellIdentifier forIndexPath:indexPath];
-    cell.textLabel.text = @"Hello World!";
+    cell.textLabel.text = self.mainArray[indexPath.row];
     
     return cell;
 }

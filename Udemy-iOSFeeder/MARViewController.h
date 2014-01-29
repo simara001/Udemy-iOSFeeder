@@ -11,5 +11,6 @@
 @interface MARViewController : UIViewController
 
 @property (weak, nonatomic) IBOutlet UITableView *mainFeeder;
+@property (strong, nonatomic) NSMutableArray *mainArray;
 
 @end
